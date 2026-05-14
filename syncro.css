@@ -1,0 +1,577 @@
+:root {
+  --base: rgb(237,238,238);
+  --base-dark: rgb(178,187,187);
+  --base-light: rgba(255, 255, 255, 1);
+  
+  --txt-color: black;
+  
+  --accent-color: rgba(10, 193, 176, 1);
+  
+  --shadow-inset: inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  --shadow-main: 0 8px 24px rgba(0, 0, 0, 0.12);
+  
+  --createArea-shadow: var(--shadow-inset), var(--shadow-main);
+}
+
+[data-theme="dark"] {
+  --base: rgba(30, 31, 31, 1);
+  --base-dark: rgba(15, 15, 15, 1);
+  --base-light: rgba(45, 47, 47, 1);
+  
+  --txt-color: white;
+  --accent-color: rgba(12, 102, 136, 1);
+
+  --shadow-inset: inset 0 1px 0px rgba(255, 255, 255, 0.08);
+
+  --shadow-main: 0 4px 6px rgba(0, 0, 0, 0.4), 
+                 0 20px 40px rgba(0, 0, 0, 0.6);
+  
+  --createArea-shadow: var(--shadow-inset), var(--shadow-main);
+}
+
+@property --progress {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
+* {
+	box-sizing: border-box;
+}
+body{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+	background-color: var(--base);
+	transition: all 0.5s ease-in-out;
+	font-family: 'Poppins', sans-serif;
+}
+.header {
+  position: sticky;
+  top: 10px;
+  margin: 0 auto;
+
+  width: 90%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  z-index: 1000;
+}
+.headerTitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  color: var(--txt-color);
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.headerTitle::after {
+  content: "";
+  display: inline-block;
+  
+  width: 0.8em; 
+  height: 0.8em;
+  
+  margin-left: 1px; 
+  
+  background-color:var(--accent-color);
+  border-radius: 50%;
+  
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+@keyframes pulse-o {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0px var(--accent-color);
+  }
+  50% {
+    opacity: 0.4;
+    box-shadow: 0 0 15px var(--accent-color);
+  }
+}
+
+.headerButtons {
+  	background: var(--accent-color);
+   	color: var(--txt-color);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.createArea {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    margin: auto;
+
+    width: min(90dvw, 420px);
+    padding: 14px 16px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    background-color: var(--base);
+
+    box-shadow: var(--createArea-shadow);
+    border-radius: 15px; 
+    z-index: 10001;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.createArea button{
+	all: unset;
+	width: 100%;
+	height: 36px;
+  cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	color: var(--txt-color);
+	background-color: var(--accent-color);
+	transition: all 0.5s ease-in-out;
+}
+.createArea--hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.createAreaInput {
+    width: 100%;
+    background-color: var(--base-light);
+    border:none;
+    
+    border-radius: 10px;
+    padding: 12px 15px;
+    color: black;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.5s ease-in-out;
+}
+
+.createAreaInput:focus {
+    border-color: var(--accent-color);
+}
+.timerSetContainer {
+    display: none;
+    width: 100%;
+    gap: 10px;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.createArea--timerMode .timerSetContainer {
+    display: flex;
+}
+
+.minutesInput, 
+.secondsInput {
+    width: 100%;
+    background-color: var(--base-light);
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--txt-color);
+    font-size: 16px;
+    text-align: center;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.minutesInput:focus, 
+.secondsInput:focus {
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+.toggleTypeButton {
+  position: absolute;
+  top: -40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  width: 25%;
+  height: 36px;
+  padding: 4px;
+  background-color: var(--base-light);
+  border-radius: 15px;
+
+  overflow: hidden;
+}
+
+.toggleTypeButton::after {
+  content: "";
+  position: absolute;
+
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+
+  left: 4px;
+  transform: translateX(0);
+  top: 4px;
+
+  background: var(--accent-color);
+  border-radius: 12px;
+
+  z-index: 1;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.toggleTypeButton i {
+  position: relative;
+  color: var(--txt-color);
+  z-index: 2;
+}
+.createArea.createArea--timerMode .toggleTypeButton::after {
+  right: 4px;
+  transform: translateX(100%);
+}
+
+.cardList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    width: 100%;
+}
+
+.timerCard {
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    background: var(--base-light);
+    box-shadow: var(--shadow-main);
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+.timerCard--finished {
+    background: color-mix(
+        in srgb,
+        var(--base-light) 88%,
+        var(--accent-color) 12%
+    );
+
+    box-shadow:
+        0 4px 12px color-mix(
+            in srgb,
+            var(--accent-color) 25%,
+            transparent
+        );
+}
+
+.timerName {
+    font-size: 11px;
+    color: var(--txt-color);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 10px 0;
+}
+
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+.infoContainer {
+    display: flex;
+    align-items: center;
+}
+.btnContainer{
+	display: flex;
+	align-items: center;
+}
+.ICTimerIcon {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--txt-color);
+    margin-right: 10px;
+}
+
+.timerDisplay {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--txt-color);
+}
+.cardButton {
+    background: var(--base);
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    margin-left: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.timerCard--finished .cardButton {
+    background: color-mix(
+        in srgb,
+        var(--accent-color) 15%,
+        var(--base) 100%
+    );
+}
+
+.cardButton:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+.cardButton i {
+    font-size: 0.9rem;
+    color: var(--txt-color);
+}
+
+.progressBar {
+    height: 6px;
+    background-color: var(--base);
+    border-radius: 15px;
+    width: 95%;
+    margin: 15px auto 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.progressBar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    opacity: 0.9;
+    background: var(--accent-color);
+    border-radius: 10px;
+    box-shadow: 0 0 5px var(--accent-color), 
+                0 0 15px var(--accent-color), 
+                0 0 40px var(--accent-color);
+    will-change: width, left;
+}
+
+.progressBar--paused::after {
+    background-color: var(--base-dark);
+    background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255, 255, 255, 0.15) 10px,
+        rgba(255, 255, 255, 0.15) 20px
+    );
+    transition: width 0.5s ease, left 0.5s ease, background-color 0.5s ease;
+}
+
+/* Timer */
+
+.progressBar--timer::after {
+    animation: countdown var(--duration, 10s) linear forwards;
+    width: var(--progress);
+}
+
+.progressBar--timer.progressBar--paused::after {
+    animation-play-state: paused;
+}
+
+/* Stopwatch */
+
+.progressBar--stopwatch::after {
+    animation: progressBarStopwatch 1s ease-in-out infinite alternate;
+}
+
+.progressBar--stopwatch.progressBar--paused::after {
+    animation: none;
+    left: 0;
+    width: 100%;
+}
+
+/* finished */
+
+.progressBar--finished::after {
+    width: 100% ;
+    animation: pulseFinished 2s infinite ease-in-out ;
+    
+    background-color: color-mix(in srgb, var(--accent-color) 15%, var(--base) 100%);
+}
+
+@keyframes pulseFinished {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+        background-color: color-mix( in srgb, var(--accent-color) 100%, transparent);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes countdown {
+    from { --progress: 100%; }
+    to { --progress: 0%; }
+}
+
+@keyframes progressBarStopwatch {
+    0%, 100% { left: 0; width: 5%; }
+    50% { width: 20%; }
+    100% { left: 95%; }
+}
+
+.createButton {
+    background-color: var(--accent-color);
+    color: var(--txt-color);
+    font-weight: bold;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.createArea--fadein {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes genericFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+@keyframes genericFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+}
+.fadeIn {
+    animation: genericFadeIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.fadeOut {
+    animation: genericFadeOut 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes genericFadeOutCollapse {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        height: var(--card-height, 100px);
+    }
+    60% {
+        opacity: 0;
+        transform: scale(0.9);
+        height: var(--card-height, 100px);
+        margin-bottom: 0;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9);
+        height: 0;
+        padding: 0;
+        margin: 0;
+        border: none;
+        overflow: hidden;
+    }
+}
+
+.fade-out-collapse {
+    animation: genericFadeOutCollapse 0.5s ease-in-out forwards;
+}
+.createArea--timerMode--fadeOut {
+  overflow: hidden;
+  animation: createAreaFadeOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes createAreaFadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 200px;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(10px);
+    max-height: 0;
+  }
+}
+.infoText {
+    position: fixed;
+    bottom: 20px; 
+    margin: 0 auto;
+    z-index: 2000;
+    
+    background-color: color-mix(in srgb, var(--txt-color) 80%, transparent);
+    color: var(--base-light);
+    
+    padding: 5px 2px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    text-align: center;
+    
+
+    box-shadow: var(--shadow-main);
+    
+    pointer-events: none; 
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background-color: rgba(19,19,19,0.306);
+  animation: overlayFadeIn 0.3s ease-out forwards;
+}
+@keyframes overlayFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(2px);
+  }
+  }
