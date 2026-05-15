@@ -252,6 +252,12 @@ body{
     padding: 20px;
     width: 100%;
 }
+@media (min-width: 768px) {
+.cardList {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+}
+}
 
 .timerCard {
     border-radius: 15px;
@@ -574,4 +580,4 @@ body{
     opacity: 1;
     backdrop-filter: blur(2px);
   }
-  }
+}
